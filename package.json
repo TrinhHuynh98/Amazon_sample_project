@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "build": "cd fontend && npm install && npm run build",
-    "start": "nodemon --watch backend --exec node --experimental-modules back-end/server.js"
+    "start": "nodemon --watch backend --exec node --experimental-modules backend/server.js"
   },
   "author": "",
   "license": "ISC",
