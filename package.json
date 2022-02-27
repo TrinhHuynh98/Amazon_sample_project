@@ -5,6 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "cd fontend && npm install && npm run build",
     "start": "nodemon --watch backend --exec node --experimental-modules back-end/server.js"
   },
   "author": "",
@@ -20,5 +21,9 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
+  },
+  "engines": {
+    "node": "16.13.2",
+    "npm": "8.1.2"
   }
 }
