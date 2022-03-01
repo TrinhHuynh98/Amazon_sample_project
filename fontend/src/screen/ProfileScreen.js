@@ -25,6 +25,9 @@ export default function ProfileScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [sellerName, setSellerName] = useState('');
+  const [sellerDescription, setSellerDescription] = useState('');
+  const [sellerLogo, setSellerLogo] = useState('');
 
   const userUpdate = useSelector((state) => state.userUpdate);
   const {
@@ -39,6 +42,11 @@ export default function ProfileScreen() {
     } else {
       setName(user.name);
       setEmail(user.email);
+      if (user.seller) {
+        setSellerName(user.seller.name);
+        setSellerLogo(user.seller.logo);
+        setSellerDescription(user.seller.description);
+      }
     }
   }, [dispatch, userInfo._id, user]);
 
@@ -47,7 +55,17 @@ export default function ProfileScreen() {
     if (password !== confirmPassword) {
       toast.error('Password and ConfirmPassword are not matched');
     } else {
-      dispatch(updateUserProfile({ id: user._id, name, email, password }));
+      dispatch(
+        updateUserProfile({
+          id: user._id,
+          name,
+          email,
+          password,
+          sellerName,
+          sellerDescription,
+          sellerLogo,
+        })
+      );
     }
   };
   return (
@@ -126,6 +144,57 @@ export default function ProfileScreen() {
                 }}
               />
             </FormControl>
+
+            {user.isSeller && (
+              <>
+                <Typography
+                  component="h1"
+                  variant="h5"
+                  style={{ marginTop: 20 }}
+                >
+                  Seller
+                </Typography>
+
+                <FormControl style={{ marginTop: 20, marginBottom: 20 }}>
+                  <TextField
+                    required
+                    id="standard-required"
+                    label="Seller Name"
+                    value={sellerName}
+                    variant="standard"
+                    onChange={(e) => {
+                      setSellerName(e.target.value);
+                    }}
+                  />
+                </FormControl>
+
+                <FormControl style={{ marginTop: 20, marginBottom: 20 }}>
+                  <TextField
+                    required
+                    id="standard-required"
+                    label="Seller Logo"
+                    value={sellerLogo}
+                    variant="standard"
+                    onChange={(e) => {
+                      setSellerLogo(e.target.value);
+                    }}
+                  />
+                </FormControl>
+
+                <FormControl style={{ marginTop: 20, marginBottom: 20 }}>
+                  <TextField
+                    required
+                    id="standard-required"
+                    label="Seller Description"
+                    value={sellerDescription}
+                    variant="standard"
+                    onChange={(e) => {
+                      setSellerDescription(e.target.value);
+                    }}
+                  />
+                </FormControl>
+              </>
+            )}
             <FormControl style={{ marginTop: 20, marginBottom: 20 }}>
               <Button variant="outlined" onClick={submitHandler}>
                 Update

@@ -62,7 +62,7 @@ export default function SignInScreen() {
             required
             id="standard-required"
             label="Email"
-            defaultValue="Your Email"
+            defaultValue=""
             variant="standard"
             onChange={(e) => {
               setEmail(e.target.value);

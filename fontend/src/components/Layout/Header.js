@@ -35,6 +35,7 @@ function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [anchorElAdmin, setAnchorElAdmin] = React.useState(null);
+  const [anchorElSeller, setAnchorElSeller] = React.useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -45,6 +46,10 @@ function Header() {
 
   const handleOpenAdminMenu = (event) => {
     setAnchorElAdmin(event.currentTarget);
+  };
+
+  const handleOpenSellerMenu = (event) => {
+    setAnchorElSeller(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
@@ -59,6 +64,10 @@ function Header() {
     setAnchorElAdmin(null);
   };
 
+  const handleCloseSellerMenu = () => {
+    setAnchorElSeller(null);
+  };
+
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
   const userSignin = useSelector((state) => state.userSignin);
@@ -68,6 +77,7 @@ function Header() {
     dispatch(signout());
   };
 
+  console.log('userInfo', userInfo);
   return (
     <>
       <AppBar
@@ -267,6 +277,50 @@ function Header() {
                 </MenuItem>
               </Menu>
 
+              {userInfo && userInfo.isSeller && (
+                <>
+                  <Tooltip title="User Setting">
+                    <Typography
+                      style={{ color: 'black', marginLeft: 15 }}
+                      onClick={handleOpenSellerMenu}
+                    >
+                      Seller
+                    </Typography>
+                  </Tooltip>
+                  <Menu
+                    sx={{ mt: '45px' }}
+                    id="menu-appbar"
+                    anchorEl={anchorElSeller}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={Boolean(anchorElSeller)}
+                    onClose={handleCloseSellerMenu}
+                  >
+                    <MenuItem onClick={handleCloseSellerMenu}>
+                      <Link to="/dashboard">
+                        <Typography textAlign="center">Dashboard</Typography>
+                      </Link>
+                    </MenuItem>
+                    <MenuItem>
+                      <Link to="/productlist/seller">
+                        <Typography textAlign="center">Products</Typography>
+                      </Link>
+                    </MenuItem>
+                    <MenuItem>
+                      <Link to="/orderlist/seller">
+                        <Typography textAlign="center">Orders</Typography>
+                      </Link>
+                    </MenuItem>
+                  </Menu>
+                </>
+              )}
               {userInfo && userInfo.isAdmin && (
                 <>
                   <Tooltip title="User Setting">

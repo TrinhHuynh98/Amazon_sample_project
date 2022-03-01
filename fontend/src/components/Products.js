@@ -27,7 +27,7 @@ function Products(props) {
   return (
     <>
       <Grid item xs={4} sm={4} md={4} style={{ marginTop: 20 }}>
-        <Card sx={{ maxWidth: 345 }}>
+        <Card key={product._id} sx={{ maxWidth: 345 }}>
           <CardActionArea>
             <Link to={`/product/${product._id}`}>
               <CardMedia
@@ -43,6 +43,9 @@ function Products(props) {
               <Typography variant="body2" color="text.secondary">
                 {product.description}
               </Typography>
+              {/* <Typography variant="body2" color="text.secondary">
+                <Link to="">{product.seller.seller.name}</Link>
+              </Typography> */}
             </CardContent>
           </CardActionArea>
 

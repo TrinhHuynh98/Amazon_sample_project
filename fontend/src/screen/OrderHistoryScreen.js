@@ -37,21 +37,19 @@ export default function OrderHistoryScreen() {
               </tr>
             </thead>
             <tbody>
-              {orders.map((orders) => (
-                <tr key={orders._id}>
-                  <td>{orders._id}</td>
-                  <td>{orders.createAt.subString(0, 10)}</td>
-                  <td>{orders.totalPrice}</td>
+              {orders.map((order) => (
+                <tr key={order._id}>
+                  <td>{order._id}</td>
+                  <td>{order.createdAt.substring(0, 10)}</td>
+                  <td>{order.totalPrice.toFixed(2)}</td>
+                  <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'No'}</td>
                   <td>
-                    {orders.isPaid ? orders.paidAt.subString(0, 10) : 'No'}
-                  </td>
-                  <td>
-                    {orders.isDelivered
-                      ? orders.deliveredAt.subString(0, 10)
+                    {order.isDelivered
+                      ? order.deliveredAt.substring(0, 10)
                       : 'No'}
                   </td>
                   <td>
-                    <Button onClick={() => navigate(`/order/${orders._id}`)}>
+                    <Button onClick={() => navigate(`/order/${order._id}`)}>
                       Details
                     </Button>
                   </td>

@@ -6,12 +6,17 @@ import { Button } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { deletedOrder, listOrder } from '../actions/orderActions';
 import { ORDER_DELETE_RESET } from '../constants/orderConstants';
 
 export default function OrderListScreen() {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const sellerMode = pathname.indexOf('/seller') >= 0;
+
+  const userSignin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSignin;
   const orderList = useSelector((state) => state.orderList);
   const { loading, error, orders } = orderList;
   const dispatch = useDispatch();
@@ -28,7 +33,7 @@ export default function OrderListScreen() {
       dispatch({ type: ORDER_DELETE_RESET });
     }
 
-    dispatch(listOrder());
+    dispatch(listOrder({ seller: sellerMode ? userInfo._id : '' }));
   }, [dispatch, orderDeleteSuccess]);
 
   const deleteHandler = (order) => {

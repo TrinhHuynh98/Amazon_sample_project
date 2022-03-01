@@ -11,26 +11,22 @@ import Footer from '../components/Layout/Footer';
 import LoadingBox from '../components/LoadingBox';
 import Messagebox from '../components/Messagebox';
 import { Button } from '@mui/material';
-// import {
-//     Button,
-//     TextField,
-//     Dialog,
-//     DialogActions,
-//     DialogContent,
-//     DialogTitle,
-//   } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   PRODUCT_CREATE_RESET,
   PRODUCT_DELETE_RESET,
 } from '../constants/productConstants';
 
-export default function ProductListScreen() {
+export default function ProductListScreen(props) {
+  const { pathname } = useLocation();
+  const sellerMode = pathname.indexOf('/seller') >= 0;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
   const { loading, error, products } = productList;
 
+  const userSignin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSignin;
   const productCreate = useSelector((state) => state.productCreate);
   const {
     loading: loadingCreate,
@@ -39,25 +35,22 @@ export default function ProductListScreen() {
     product: createdProduct,
   } = productCreate;
 
-  const createProductHandler = () => {
-    dispatch(createProduct());
-  };
-
-  //   const [open, setOpen] = React.useState(false);
-  //   const handleClickOpen = (product) => {
-  //     setOpen(true);
-  //     dispatch(detailsProduct(product._id));
-  //   };
-  //   const handleClose = () => {
-  //     setOpen(false);
-  //   };
-
   const productDelete = useSelector((state) => state.productDelete);
   const {
     loading: productDeleteLoading,
     error: productDeleteError,
     success: productDeleteSuccess,
   } = productDelete;
+
+  const createProductHandler = () => {
+    dispatch(createProduct());
+  };
+
+  const deleteHandler = (product) => {
+    if (window.confirm('Are you sure to delete?')) {
+      dispatch(deletedProduct(product._id));
+    }
+  };
 
   useEffect(() => {
     if (successCreate) {
@@ -67,14 +60,8 @@ export default function ProductListScreen() {
     if (productDeleteSuccess) {
       dispatch({ type: PRODUCT_DELETE_RESET });
     }
-    dispatch(listProducts());
+    dispatch(listProducts({ seller: sellerMode ? userInfo._id : '' }));
   }, [createdProduct, dispatch, navigate, successCreate, productDeleteSuccess]);
-
-  const deleteHandler = (product) => {
-    if (window.confirm('Are you sure to delete?')) {
-      dispatch(deletedProduct(product._id));
-    }
-  };
 
   return (
     <div>
